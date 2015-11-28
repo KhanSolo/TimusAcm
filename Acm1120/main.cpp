@@ -1,23 +1,22 @@
 #include <iostream>
-typedef /*unsigned*/ int uint;
 
 // acm timus 1120
 
 void main()
 {
-	uint n,a,p;
+	int n,a,p;
 	std::cin >> n;
 	
-	uint p1 = 0, a1 = 0;
+	int p1 = 0, a1 = 0;
 
 	// корень кв уравнения P : (A+P-1)(A+P) = 2N
-	uint lim = 44721;
+	int lim = 44721;
 	for (p = 1; p < lim; p++)
 	{		
-		uint zp = (2 * n) % p;
+		int zp = (2 * n) % p;
 		if (zp > 0) continue;
 		
-		uint za = (2 * n / p - p + 1) % 2;
+		int za = (2 * n / p - p + 1) % 2;
 		if (za > 0) continue;
 
 		a = (2 * n / p -  p + 1) >> 1;
