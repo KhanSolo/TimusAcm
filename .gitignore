@@ -8,3 +8,5 @@
 *.sdf
 *.ilk
 *.suo
+*.opensdf
+*.user
