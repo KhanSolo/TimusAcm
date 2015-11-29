@@ -7,7 +7,6 @@ void main()
 	cin >> f;
 
 	cout << 
-		(((12 - f) <= 5) ? "YES" : "NO")
-		
+		(((12 - f) <= 5) ? "YES" : "NO")		
 		;
 }
