@@ -1,6 +1,4 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 #include <string>
 using namespace std;
 
@@ -28,6 +26,25 @@ to_be
 
 
 -----
+
+2 4 5
+aa
+aa
+aa
+aa
+aa
+correct answer is 3, not 2
+
+----
+aa_
+aa_
+----
+aa_
+aa_
+----
+aa_
+
+----
 */
 
 int main()
@@ -39,45 +56,52 @@ int main()
 
 	cin >> h >> w >> n;
 
-	//vector<string> word(n);
-
-	int pages = 0; // число страниц
-	int lines = 0; // строк
-	int prev_len = 0; // длина предыдущей строки
+	int lines = 0; // начатых строк
+	int prev_len = 0; // итоговая длина ранее набранной строки
 	for (int i = 0; i < n; i++)
 	{
 		string wrd;
 		cin >> wrd;
 		int len = wrd.length();
-
-		if (prev_len + 1 + len <= w)
+		
+		// начало	строки
+		if (0 == prev_len)
 		{
+//			cout << "case 1" << endl;
 			// уложились
-			prev_len += (len + 1);
-			if (prev_len == w)
+			prev_len = len; // в начале строки пробелы не нужны
+
+			if (prev_len == w) // строка заполнена
 			{
 				prev_len = 0;
+			}
+
+			lines++;
+		}
+		else
+		{
+			if (prev_len + (1 + len) <= w) // уже набранная длина + пробел + текущая
+			{
+//				cout << "case 2" << endl;
+				// уложились
+				prev_len += (1 + len);
+
+				if (prev_len == w) // строка заполнена
+				{
+					prev_len = 0;
+				}
+			}
+			else
+			{
+//				cout << "case 3" << endl;
+				// не уложились - начали новую строку
+				prev_len = len;
 				lines++;
 			}
 		}
-		else
-		{ 
-			// не уложились
-			prev_len = len;
-			lines++;
-		}
-
-		if (lines == h)
-		{
-			lines = 0;
-			pages++;
-		}
 	}
-
-	if (lines > 0)
-		pages++;
-
-	cout << pages;
+	
+	cout << lines / h + ((lines % h) ? 1 : 0);
 
 	return 0;
 }
