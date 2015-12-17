@@ -4,13 +4,14 @@ using namespace std;
 
 int main()
 {
-	int coef[6] = {
-	1, 
-	3, 
-	2, 
-	6, 
-	4, 
-	5
+	int mods[6] = 
+	{
+		1, // 1 % 7		; 1000000 % 7
+		3, // 10 % 7	; 
+		2, // 100 % 7	;
+		6, // 1000 % 7	;
+		4, // 10000 % 7	;
+		5  // 100000 % 7;
 	};
 	
 	string bignum;	
@@ -18,15 +19,21 @@ int main()
 
 	int r = 0;
 	int n = 0;
-	for (auto i = bignum.rbegin(); 
+	for (auto i = bignum.rbegin();  // from end to begin
 		i != bignum.rend(); 
 		++i, ++n)
 	{
 		// *i - символ в числе
 		//  (*i - '0') - цифра в числе
-		r = r + 
-		(*i - '0') 
-		* coef[n % 6]; // todo проверить
+
+		auto cif = (*i - '0');
+			//cout << cif << " ";
+		auto idx = n % 6;
+			//cout << idx << " ";
+		int k = mods[idx];
+			//cout << k << " ";
+		r = r + cif * k; // todo проверить
+			//cout << r << endl;
 	}
 
 	cout << r % 7;
