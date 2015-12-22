@@ -1,40 +1,72 @@
-#include <iostream>
-#include <algorithm>
+//#include <iostream>
 #include <cstdio>
-#include <cstring>
-const int MAXN = 1000000 + 10;
-int a[2 * MAXN];
+#include <vector>
+
+/*
+From the site FAQ on C/C++:
+
+An example of how to use input/output is given above. 
+C++ programmers may always choose between two input/output libraries: 
+standard (scanf, printf) 
+or stream (cin, cout) input/output. 
+
+Stream input/output is easy to use, but it works much slower than standard input/output. 
+This may even cause receiving the Time limit exceeded verdict. 
+Therefore, if you see that a problem requires reading a lot of input data 
+(for example, more than a megabyte) or a large output is expected, 
+then you should better use standard input/output.
+
+*/
+
 using namespace std;
+
+int min(int a, int b)
+{
+	if (a < b) return a;
+	return b;
+}
+
+const int MAXN = 2097152;
+
 int main()
 {
-	int n;
+	//cin.sync_with_stdio(false);
+	
+	vector<int> a(MAXN,0);
+
+	int n; 	//cin >> n;
 	scanf_s("%d", &n);
-	int i = 1;
+
+	int poin = 1; // next elem pointer
 	while (n--)
 	{
-		int t;
-		scanf_s("%d", &t);
-		if (t > 0)
+		int cur;  //cin >> cur;
+		scanf_s("%d", &cur);
+		if (cur > 0) // push
 		{
-			a[i++] = t;
+			a[poin++] = cur;
+			continue;
 		}
-		else if (t == -1)
+		
+		if (-1 == cur) // pop
 		{
-			printf("%d\n", a[--i]);
+			//cout << a[--poin] << endl;
+			auto r = a[--poin];
+			printf_s("%d\n", r); 
+			continue;
 		}
-		else if (t == 0)
+			
+		if (0 == cur) // copy
 		{
-			if (i - 1 <= n)
+			if (poin - 1 <= n)
 			{
-				int num = min(i - 1, n);
-				for (int j = 1; j <= num; ++j)
-				{
-					a[i] = a[i - num];
-					++i;
-				}
+				int num = min(poin - 1, n);
+
+				for (int j = 1; j <= num; ++j, poin++) 
+					a[poin] = a[poin - num];						
 			}
 		}
 	}
-	//system("pause");
+
 	return 0;
 }
