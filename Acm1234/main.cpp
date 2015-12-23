@@ -7,17 +7,19 @@ using namespace std;
 typedef long double dbl;
 typedef long long lng;
 
+// angles not equal
+
 string GetAnswer(lng a, lng b, lng d, lng e)
 {	
-	if (a<=d
-		&&
-		b<=e)
+	if (a<=d && b<=e)
 	{
 		return "YES";
 	}
 	
 	//dbl x2 = (b * d + a * e)*(b * d + a * e) / (d*d + e*e); 
 	//dbl y2 = (b * e + a * d)*(b * e + a * d) / (d*d + e*e); 
+
+	// просовывает строго по диагонали
 	if (
 	 (d*d*(d*d + e*e) >= (b * d + a * e)*(b * d + a * e)) &&
 	 (e*e*(d*d + e*e) >= (b * e + a * d)*(b * e + a * d))
@@ -26,6 +28,14 @@ string GetAnswer(lng a, lng b, lng d, lng e)
 	{
 		return "YES";
 	}
+
+	// просовывает не строго по диагонали
+	// TODO !
+	/*
+	
+	*/
+
+
 	return "NO";
 }
 
@@ -68,9 +78,6 @@ void swap(lng&a, lng&b) { lng temp = a; a = b; b = temp; }
 
 int main() // still wa 16
 {	
-	//dbl dd = 14.999999999999997;
-	//lng ll = (lng)dd;
-
 	//_ASSERT(GetAnswer(1.0, 1.0, 1.0, 1.0, 1.0) == "YES");
 	//_ASSERT(GetAnswer(1.0, 1.5, 2.0, 1.0, 1.4) == "NO");	
 	//_ASSERT(GetAnswer(1.0, 1.5, 2.0, 1.0, 1.5) == "YES");	
@@ -81,14 +88,14 @@ int main() // still wa 16
 	//_ASSERT(GetAnswer(10.0, 10.0, 10.0, 10.0, 10.0) == "YES");
 	//---
 
-	//_ASSERT(GetAnswer(10, 10, 10, 10) == "YES");
-	//_ASSERT(GetAnswer(10, 15, 10, 14) == "NO");
-	//_ASSERT(GetAnswer(10, 15, 10, 15) == "YES");
-	//_ASSERT(GetAnswer(10, 100, 60, 90) == "NO");
-	//_ASSERT(GetAnswer(10, 100, 70, 90) == "YES");
-	//_ASSERT(GetAnswer(15, 29, 14, 100) == "NO");
-	//_ASSERT(GetAnswer(10, 100, 90, 90) == "YES");
-	//_ASSERT(GetAnswer(100, 100, 100, 100) == "YES");
+	_ASSERT(GetAnswer(10, 10, 10, 10) == "YES");
+	_ASSERT(GetAnswer(10, 15, 10, 14) == "NO");
+	_ASSERT(GetAnswer(10, 15, 10, 15) == "YES");
+	_ASSERT(GetAnswer(10, 100, 60, 90) == "NO");
+	_ASSERT(GetAnswer(10, 100, 70, 90) == "YES");
+	_ASSERT(GetAnswer(15, 29, 14, 100) == "NO");
+	_ASSERT(GetAnswer(10, 100, 90, 90) == "YES");
+	_ASSERT(GetAnswer(100, 100, 100, 100) == "YES");
 
 	//---
 	
