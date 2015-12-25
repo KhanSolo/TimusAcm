@@ -13,18 +13,33 @@
 
 */
 #include <iostream>
+#include <vector>
 using namespace std;
 
 // TODO !!!
 
-void main()
+int main()
 {
 	int n;
 	cin >> n;
 
-	int* arr = new int[n];
+	if (1 == n)
+	{
+		cout << "a1";
+		return 0;
+	}
 
-	arr[n - 1] = 123;
 
-	delete[] arr;
+	if (n < 4)
+	{
+		cout << "IMPOSSIBLE";
+	}
+	else
+	{
+		vector<int> init_row(n, 0);
+		vector<vector<int>> board(n, init_row);
+
+
+	}
+	return 0;
 }

@@ -1,14 +1,15 @@
 #include <iostream>
-#include <map>
+
 using namespace std;
 
+// חאהאקא םא דנאפû
 
 void main()
 {
-	int n, steps = 0;
+	int n;
 	cin >> n;
 
 	// todo!
 
-	cout << steps;
+	
 }
