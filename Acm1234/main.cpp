@@ -97,8 +97,13 @@ int main() // still wa 16
 	_ASSERT(GetAnswer(10, 100, 90, 90) == "YES");
 	_ASSERT(GetAnswer(100, 100, 100, 100) == "YES");
 
+	// hole  = 8.8 (e) 6.6 (d)  diag angle 36,9 degrees
+	// brick = 10.0 (b) 1.0 (a)
+	_ASSERT(GetAnswer(10, 100, 66, 88) == "YES"); // впритирочку но не по диагонали
+
 	//---
-	
+	// pi = 3.141592654
+
 	vector<dbl> v1(3);
 
 	cin >> v1[0] >> v1[1] >> v1[2];
