@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -276,8 +277,7 @@ namespace DataStructures.SegmentTree
             _repr = new Pair<int, int>
                 [1 << (Log2(len) + 2)];
         }
-
-
+        
         static int Log2(int n)
         {
             int result = 0;
@@ -288,8 +288,7 @@ namespace DataStructures.SegmentTree
             }
             return result;
         }
-
-
+        
         public void Initialize(int[] elems)
         {
             if (elems.Length == 0)
@@ -397,7 +396,7 @@ namespace IO
 {
     public interface IOutput
     {
-        void WriteLine(string value);
+        //void WriteLine(string value);
         void Wait();
         void Write(string value);
     }
@@ -419,10 +418,10 @@ namespace IO
 
     public class SimpleConsoleOutput : IOutput
     {
-        public void WriteLine(string value)
-        {
-            Console.WriteLine(value);
-        }
+        //public void WriteLine(string value)
+        //{
+        //    Console.WriteLine(value);
+        //}
 
         public void Write(string value)
         {
@@ -718,7 +717,7 @@ namespace Logic
         }
 
 
-        private bool _needEmptyString = false;
+        private bool _needEmptyString;
         private void OutputResult(List<Word> results, IOutput output, bool isLast)
         {
             int count = results.Count;
@@ -729,6 +728,8 @@ namespace Logic
 
                 if (isLast)
                 {
+                    Debug.Assert(10 == count);
+
                     for (int i = 0; i < count; i++)
                     {
                         bool isRealLast = i == count - 1;
