@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3ADCBFEF-02EB-4F80-B629-B600813CADCE}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,8 +20,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acm1542cs", "Acm1542cs\Acm1542cs.csproj", "{ED4A3643-0F74-4F4F-9352-F44E92F3250E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acm1542csTest", "Acm1542csTest\Acm1542csTest.csproj", "{44C4B407-87E5-46CA-BF1B-B93E225F25E8}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Acm1149", "Acm1149\Acm1149.vcxproj", "{B7DB3002-0A7D-4499-963C-D2FF73611A91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,14 +99,6 @@ Global
 		{44C4B407-87E5-46CA-BF1B-B93E225F25E8}.Release|Win32.Build.0 = Release|Any CPU
 		{44C4B407-87E5-46CA-BF1B-B93E225F25E8}.Release|x64.ActiveCfg = Release|Any CPU
 		{44C4B407-87E5-46CA-BF1B-B93E225F25E8}.Release|x64.Build.0 = Release|Any CPU
-		{B7DB3002-0A7D-4499-963C-D2FF73611A91}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{B7DB3002-0A7D-4499-963C-D2FF73611A91}.Debug|Win32.ActiveCfg = Debug|Win32
-		{B7DB3002-0A7D-4499-963C-D2FF73611A91}.Debug|Win32.Build.0 = Debug|Win32
-		{B7DB3002-0A7D-4499-963C-D2FF73611A91}.Debug|x64.ActiveCfg = Debug|Win32
-		{B7DB3002-0A7D-4499-963C-D2FF73611A91}.Release|Any CPU.ActiveCfg = Release|Win32
-		{B7DB3002-0A7D-4499-963C-D2FF73611A91}.Release|Win32.ActiveCfg = Release|Win32
-		{B7DB3002-0A7D-4499-963C-D2FF73611A91}.Release|Win32.Build.0 = Release|Win32
-		{B7DB3002-0A7D-4499-963C-D2FF73611A91}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
