@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acm1542cs", "Acm1542cs\Acm1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acm1542csTest", "Acm1542csTest\Acm1542csTest.csproj", "{44C4B407-87E5-46CA-BF1B-B93E225F25E8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Acm1332", "Acm1332\Acm1332.vcxproj", "{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,16 @@ Global
 		{44C4B407-87E5-46CA-BF1B-B93E225F25E8}.Release|Win32.Build.0 = Release|Any CPU
 		{44C4B407-87E5-46CA-BF1B-B93E225F25E8}.Release|x64.ActiveCfg = Release|Any CPU
 		{44C4B407-87E5-46CA-BF1B-B93E225F25E8}.Release|x64.Build.0 = Release|Any CPU
+		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Debug|Win32.Build.0 = Debug|Win32
+		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Debug|x64.ActiveCfg = Debug|x64
+		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Debug|x64.Build.0 = Debug|x64
+		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Release|Any CPU.ActiveCfg = Release|Win32
+		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Release|Win32.ActiveCfg = Release|Win32
+		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Release|Win32.Build.0 = Release|Win32
+		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Release|x64.ActiveCfg = Release|x64
+		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
