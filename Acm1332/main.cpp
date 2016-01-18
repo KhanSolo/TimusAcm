@@ -1,10 +1,5 @@
 /*
-1. R = R - r;  Then You will solve problem with N points and a circle of radius R
-2. Build 2 circles thru all pairs of points (it is n*(n-1) circles) 
-and calculate amount of points in this circles. Maximum of them is the answer.
-
-
-Рассматриваем 3 города(r) и окружность(R), которая их охватывает на пределе
+Рассмотрим 3 города(r) и окружность(R), которая их охватывает на пределе
 Тогда их центры лежат на окружности радиуса R-r
 
 Теперь строим эту окружность проходящую через каждую пару точек (в одну и другую стороны)
@@ -28,8 +23,7 @@ using namespace std;
 
 int main()
 {
-	int n;
-	cin >> n;
+	int n;	cin >> n;
 
 	// центры городов
 	vector<pair<int, int>> points(n);
@@ -48,8 +42,21 @@ int main()
 	R -= r;
 
 	//---
-	// TODO
+	int max = 0;
+
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+		{
+			if (i!=j)
+			{
+				// окружность по 2м точкам
+
+
+			}
+		}
 	//---
+
+	cout << max << endl;
 
 	return 0;
 }
