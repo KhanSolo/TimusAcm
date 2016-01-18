@@ -5,17 +5,18 @@ using namespace std;
 
 enum TYPE_VERTEX
 {
-	WHITE, GRAY, BLACK
+	WHITE, 
+	GRAY, 
+	BLACK
 };
 
-
-// поиск в глубину
+// РїРѕРёСЃРє РІ РіР»СѓР±РёРЅСѓ
 void dfs
 	(
 		int cur, 
 		vector<int> &ans, 
 		vector<TYPE_VERTEX> &v_color, 
-		vector<vector<int>> &adj
+		vector<vector<int>> &adj // РіСЂР°С„
 	)
 {
 	v_color[cur] = GRAY;
@@ -30,12 +31,11 @@ void dfs
 	ans.push_back(cur);
 }
 
+// С‚РѕРїРѕР»РѕРіРёС‡РµСЃРєСЏ СЃРѕСЂС‚РёСЂРѕРІРєР°
 
-// топологическя сортировка
-
-// Запускаем серию поисков в глубину, 
-// чтобы обойти все вершины графа. 
-// Отсортируем вершины по времени выхода по убыванию - это и будет ответом.
+// Р—Р°РїСѓСЃРєР°РµРј СЃРµСЂРёСЋ РїРѕРёСЃРєРѕРІ РІ РіР»СѓР±РёРЅСѓ, 
+// С‡С‚РѕР±С‹ РѕР±РѕР№С‚Рё РІСЃРµ РІРµСЂС€РёРЅС‹ РіСЂР°С„Р°. 
+// РћС‚СЃРѕСЂС‚РёСЂСѓРµРј РІРµСЂС€РёРЅС‹ РїРѕ РІСЂРµРјРµРЅРё РІС‹С…РѕРґР° РїРѕ СѓР±С‹РІР°РЅРёСЋ - СЌС‚Рѕ Рё Р±СѓРґРµС‚ РѕС‚РІРµС‚РѕРј.
 
 void topological_sort
 	(
@@ -54,17 +54,38 @@ void topological_sort
 	}
 }
 
-// заюзаем топологическую сортировку
+// Р·Р°СЋР·Р°РµРј С‚РѕРїРѕР»РѕРіРёС‡РµСЃРєСѓСЋ СЃРѕСЂС‚РёСЂРѕРІРєСѓ
 int main()
 {
-	int n; // к-во членов совета
+	int n; // Рє-РІРѕ С‡Р»РµРЅРѕРІ СЃРѕРІРµС‚Р°
 	cin >> n;
 	
-	vector<int> vec_init(n);
-	vector<vector<int>> adj(n, vec_init); // граф
-	vector<TYPE_VERTEX> v_color;
+	vector<vector<int>> adj(n, 
+		vector<int>() // СЃРїРёСЃРѕРє РґРѕС‡РµСЂРЅРёС… РІРµСЂС€РёРЅ i-Р№ РІРµСЂС€РёРЅС‹
+		); // РіСЂР°С„
 
+	for (int i = 0; i < n; i++)
+	{
+		while (true)
+		{
+			int val;
+			cin >> val;
+			if (0 == val) break;
 
+			adj[i].push_back(--val);
+		}
+	}
+	
+	// С†РІРµС‚Р° РІРµСЂС€РёРЅ
+	vector<TYPE_VERTEX> v_color(n,WHITE);
+
+	vector<int> ans;
+	topological_sort(ans, v_color, adj);
+			
+	for (auto iter = ans.rbegin(); iter != ans.rend(); ++iter)
+	{
+		cout << (*iter + 1) << " ";
+	}
 
 	return 0;
 }
