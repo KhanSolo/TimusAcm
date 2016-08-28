@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acm1542csTest", "Acm1542csT
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Acm1332", "Acm1332\Acm1332.vcxproj", "{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acm1517cs", "Acm1517cs\Acm1517cs.csproj", "{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,18 @@ Global
 		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Release|Win32.Build.0 = Release|Win32
 		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Release|x64.ActiveCfg = Release|x64
 		{7DA3A5C2-2CB6-4120-9BCD-72059FC8158C}.Release|x64.Build.0 = Release|x64
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Debug|Win32.Build.0 = Debug|Any CPU
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Debug|x64.Build.0 = Debug|Any CPU
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Release|Win32.ActiveCfg = Release|Any CPU
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Release|Win32.Build.0 = Release|Any CPU
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Release|x64.ActiveCfg = Release|Any CPU
+		{40C0EA2B-76FB-459E-8B2F-1CF0A28E8B1A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
