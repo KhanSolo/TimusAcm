@@ -10,5 +10,7 @@
 *.suo
 *.opensdf
 *.user
+*.lock
 */obj/*/*
 */bin/*/*
+*/target/
