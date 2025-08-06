@@ -1,57 +1,41 @@
+use std::io::{self, BufRead};
+
 fn main() {
-    let mut input = String::with_capacity(16);
-    let cnt = read_u32(&mut input);
+    let stdin = io::stdin();
+    let mut reader = stdin.lock(); // lock for faster read
+    let mut buf = String::new();
 
+    // read elements count for map
+    let cnt = read_u32(&mut reader, &mut buf);
     let mut map = Vec::with_capacity(cnt as usize);
-    let mut prev:  Option<u32> = None;
-    for _ in 0..cnt {
-        let year = read_u32(&mut input);
 
-        match prev {
-            Some(prev_year) => {
-                if prev_year < year {
-                    map.push(year);
-                    prev = Some(year);
-                }
-            },
-            None => {
-                map.push(year);
-                prev = Some(year);
-            },
-        }        
+    let mut prev = None;
+    for _ in 0..cnt {
+        let year = read_u32(&mut reader, &mut buf);
+        if prev.map_or(true, |prev_year| prev_year < year) {
+            map.push(year);
+            prev = Some(year);
+        }
     }
 
-    let cnt = read_u32(&mut input);
-    let mut sum = 0u32;
+    // matching
+    let cnt = read_u32(&mut reader, &mut buf);
+    let mut sum = 0;
     for _ in 0..cnt {
-        let year = read_u32(&mut input);
-        let a = map.binary_search(&year);
-        match a {
-            Ok(_) => sum+=1,
-            Err(_) => (),
+        let year = read_u32(&mut reader, &mut buf);
+        if let Ok(_) = map.binary_search(&year) {
+            sum += 1;
         }
     }
 
     println!("{}", sum);
 }
 
-fn read_u32(input:&mut String) -> u32 {
-    input.clear();
-    std::io::stdin().read_line(input).ok();
-
-    trim_newline(input);
-    let cnt = input.parse::<u32>().expect("cannot parse");
-
-    cnt
-}
-
-fn trim_newline(s: &mut String) {
-    if s.ends_with('\n') {
-        s.pop();
-        if s.ends_with('\r') {
-            s.pop();
-        }
-    }
+// Read u32 from reader, skip non numbers
+fn read_u32(reader: &mut impl BufRead, buf: &mut String) -> u32 {
+    buf.clear();
+    reader.read_line(buf).expect("Failed to read line");
+    buf.trim_end().parse().expect("Not a number")
 }
 
 fn bnr_srch(arr: &[u32], x: u32) -> Option<usize> { 
