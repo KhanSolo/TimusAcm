@@ -3,7 +3,7 @@ fn main() {
 	//declare an array.size 100000
 	const N: usize = 100000;
 	let mut arr: [u32; N] = [0; N]; // numbers
-	let mut mux: [u32; N] = [0; N]; // max values for [0..n], n - user input
+	let mut mux: [u16; N] = [0; N]; // max values for [0..n], n - user input
 
 	// generate all numbers and max values on [0..N]
 	arr[0] = 0; mux[0] = 0;
@@ -19,7 +19,7 @@ fn main() {
 		arr[i] = val;
 
 		if val > max { max = val; }
-		mux[i] = max;
+		mux[i] = max as u16;
 	}
 
 	// input the values n.
