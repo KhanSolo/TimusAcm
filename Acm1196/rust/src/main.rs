@@ -1,41 +1,42 @@
-use std::io::{self, BufRead};
+use std::io::{self, Read};
 
 fn main() {
-    let stdin = io::stdin();
-    let mut reader = stdin.lock(); // lock for faster read
-    let mut buf = String::new();
+    // Read ALL input to String
+    let mut input = String::new();
+    io::stdin().read_to_string(&mut input).expect("Failed to read input");
 
-    // read elements count for map
-    let cnt = read_u32(&mut reader, &mut buf);
+    // split and parse
+    let mut numbers = input
+        .split_whitespace()
+        .map(|s| s.parse::<u32>().expect("Invalid number"));
+
+    // map count (1st number)
+    let cnt = numbers.next().unwrap();
     let mut map = Vec::with_capacity(cnt as usize);
-
     let mut prev = None;
+
+    // fill map
     for _ in 0..cnt {
-        let year = read_u32(&mut reader, &mut buf);
-        if prev.map_or(true, |prev_year| prev_year < year) {
+        let year = numbers.next().unwrap();
+        if prev.map_or(true, |p| p < year) {
             map.push(year);
             prev = Some(year);
         }
     }
 
-    // matching
-    let cnt = read_u32(&mut reader, &mut buf);
+    // get amount
+    let query_cnt = numbers.next().unwrap();
     let mut sum = 0;
-    for _ in 0..cnt {
-        let year = read_u32(&mut reader, &mut buf);
-        if let Ok(_) = map.binary_search(&year) {
+
+    // handling with binary_search
+    for _ in 0..query_cnt {
+        let year = numbers.next().unwrap();
+        if map.binary_search(&year).is_ok() {
             sum += 1;
         }
     }
 
     println!("{}", sum);
-}
-
-// Read u32 from reader, skip non numbers
-fn read_u32(reader: &mut impl BufRead, buf: &mut String) -> u32 {
-    buf.clear();
-    reader.read_line(buf).expect("Failed to read line");
-    buf.trim_end().parse().expect("Not a number")
 }
 
 fn bnr_srch(arr: &[u32], x: u32) -> Option<usize> { 
