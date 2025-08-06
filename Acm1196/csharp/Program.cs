@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace ConsoleApp31
+namespace Acm1196
 {
     public static class MainClass
     {
         public static void Main()
         {
-            var map = new HashSet<uint>();
             var count = int.Parse(Console.ReadLine());
+            var map = new HashSet<uint>(count);
             uint prev = 0;
             for (var i = 0; i < count; i++)
             {
@@ -19,7 +19,7 @@ namespace ConsoleApp31
                     prev = year;
                 }
             }
-            
+
             count = int.Parse(Console.ReadLine());
 
             uint matches = 0;
