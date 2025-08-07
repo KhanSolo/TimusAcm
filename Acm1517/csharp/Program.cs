@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Acm1517cs
+namespace Acm1517
 {
     class Program
     {
