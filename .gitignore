@@ -16,3 +16,4 @@
 *.tlog
 *.user
 .vscode
+**/.vs/*
