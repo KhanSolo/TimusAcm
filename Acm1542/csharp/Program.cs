@@ -40,7 +40,7 @@ public class Trie
             int index = c - 'a';
             
             if (current.Children[index] == null)
-                current.Children[index] = new TrieNode();
+                current.Children[index] = new ();
             
             current = current.Children[index];
         }
@@ -56,7 +56,9 @@ public class Trie
         var current = _root;
         foreach (var c in prefix)
         {
-            current = current.Children[c - 'a'];
+            var index = c - 'a';
+            if (current.Children[index] == null) return new();
+            current = current.Children[index];
         }
         
         CollectWords(current, prefix, results);
@@ -113,7 +115,6 @@ internal class FileInput : IInput
     public string ReadLine() => reader.ReadLine();
 }
 
-
 public static class Program
 {
     public static void Main()
@@ -128,15 +129,9 @@ public static class Program
             for (int i = 0; i < num; i++)
             {
                 var line = input.ReadLine();
-                var whitPos = 0;
-                for (int j = 0; j < line.Length; j++)
-                {
-                    if (line[j] == ' ')
-                    {
-                        whitPos = j;
-                        break;
-                    }
-                }
+                var whitPos = line.IndexOf(' ');
+                if (whitPos == -1) continue;
+
                 var word = line[..whitPos];
                 var rate = line[(whitPos + 1)..];
                 var freq = int.Parse(rate);
@@ -149,7 +144,7 @@ public static class Program
             {
                 var query = input.ReadLine();
                 var appWords = trie.Query(query);
-                foreach (var (word, q) in appWords)
+                foreach (var (word, _) in appWords)
                 {
                     Console.WriteLine(word);
                 }
@@ -158,40 +153,3 @@ public static class Program
         }
     }
 }
-
-//public class Program0
-//{
-//    public static void Main1()
-//    {
-//        var trie = new Trie();
-
-//        trie.Insert("apple", 5);
-//        trie.Insert("appetite", 8);
-//        trie.Insert("application", 3);
-//        trie.Insert("app", 10);
-//        trie.Insert("banana", 6);
-//        trie.Insert("band", 7);
-//        trie.Insert("bandage", 4);
-//        trie.Insert("appendix", 9);
-//        trie.Insert("approve", 2);
-//        trie.Insert("apt", 1);
-//        trie.Insert("applet", 7);
-//        trie.Insert("appetizer", 6);
-        
-//        var appWords = trie.Query("app");
-//        Console.WriteLine("Words with prefix 'app':");
-//        foreach (var (word, rating) in appWords)
-//        {
-//            Console.WriteLine($"{word} (Rating: {rating})");
-//        }        
-
-//        Console.WriteLine();
-
-//        var banWords = trie.Query("ban");
-//        Console.WriteLine("Words with prefix 'ban':");
-//        foreach (var (word, rating) in appWords)
-//        {
-//            Console.WriteLine($"{word} (Rating: {rating})");
-//        }
-//    }
-//}
