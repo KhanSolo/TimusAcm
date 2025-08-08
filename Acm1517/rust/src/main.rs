@@ -67,3 +67,8 @@ fn longest_common_substring(s1: &str, s2: &str) -> String {
 
     best_substr
 }
+
+fn main()
+{
+    
+}

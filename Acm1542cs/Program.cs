@@ -131,20 +131,9 @@ namespace DataStructures
 
         public int CompareTo(WordRange other)
         {
-            var weightCompare = Weight
-                .CompareTo(other.Weight);
+            var weightCompare = Weight.CompareTo(other.Weight);
 
-            if (weightCompare == 0)
-            {
-                int sc = 0;
-
-                sc =
-                    other.Index - this.Index;
-
-                return sc;
-            }
-
-            return weightCompare;
+            return weightCompare == 0 ? other.Index - Index : weightCompare;
         }
     }
 }
@@ -418,11 +407,6 @@ namespace IO
 
     public class SimpleConsoleOutput : IOutput
     {
-        //public void WriteLine(string value)
-        //{
-        //    Console.WriteLine(value);
-        //}
-
         public void Write(string value)
         {
             Console.Write(value);
