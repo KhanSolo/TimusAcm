@@ -9,25 +9,22 @@ namespace Acm1542;
 
 static class Co
 {
-    public const int AlphabetSize = 26;
+    public const byte AlphabetSize = 26;
     public const int MaxWordLength = 15;
 }
 
-public class TrieNode
-{    
-    public TrieNode[] Children { get; }
-    public bool IsEndOfWord { get; set; }
-    public int Rating { get; set; }
-    
-    public TrieNode()
+public sealed class TrieNode
+{
+    private TrieNode[] _children;
+    public TrieNode[] Children
     {
-        Children = new TrieNode[Co.AlphabetSize];
-        IsEndOfWord = false;
-        Rating = 0;
+        get => _children ??= new TrieNode[Co.AlphabetSize];        
     }
+
+    public int Rating { get; set; } = 0;
 }
 
-public class Trie
+public sealed class Trie
 {
     private readonly TrieNode _root = new();
     
@@ -39,13 +36,11 @@ public class Trie
         {
             int index = c - 'a';
             
-            if (current.Children[index] == null)
-                current.Children[index] = new ();
+            if (current.Children[index] == default(TrieNode))
+                current.Children[index] = new TrieNode();
             
             current = current.Children[index];
         }
-        
-        current.IsEndOfWord = true;
         current.Rating = rating;
     }
 
@@ -71,14 +66,13 @@ public class Trie
     
     private static void CollectWords(TrieNode node, string currentWord, List<(string Word, int Rating)> results)
     {
-        if (node is null) return;
-        
-        if (node.IsEndOfWord)
+        if (node is null) return; // not exists this way
+        if (node.Rating > 0) // end of word
         {
             results.Add((currentWord, node.Rating));
         }
         
-        for (int i = 0; i < Co.AlphabetSize; i++)
+        for (byte i = 0; i < Co.AlphabetSize; i++)
         {
             if (node.Children[i] != null)
             {
@@ -89,32 +83,6 @@ public class Trie
     }
 }
 
-internal interface IInput: IDisposable
-{
-    string ReadLine();
-}
-
-internal class ConsoleInput : IInput
-{
-    public void Dispose() { }
-
-    public string ReadLine() => Console.ReadLine();
-}
-
-internal class FileInput : IInput
-{
-    StreamReader reader;
-
-    public FileInput(string filename)
-    {
-        reader = new (filename, Encoding.UTF8, true, bufferSize: 8192);
-    }
-
-    public void Dispose() => reader?.Dispose();    
-
-    public string ReadLine() => reader.ReadLine();
-}
-
 public static class Program
 {
     public static void Main()
@@ -122,7 +90,6 @@ public static class Program
         using (var input = new ConsoleInput())
         //using (var input = new FileInput("input.txt"))
         {
-            var sw = Stopwatch.StartNew();
             var trie = new Trie();
 
             var num = int.Parse(input.ReadLine());
@@ -152,4 +119,31 @@ public static class Program
             }
         }
     }
+}
+
+
+internal interface IInput: IDisposable
+{
+    string ReadLine();
+}
+
+internal class ConsoleInput : IInput
+{
+    public void Dispose() { }
+
+    public string ReadLine() => Console.ReadLine();
+}
+
+internal class FileInput : IInput
+{
+    StreamReader reader;
+
+    public FileInput(string filename)
+    {
+        reader = new (filename, Encoding.UTF8, true, bufferSize: 8192);
+    }
+
+    public void Dispose() => reader?.Dispose();    
+
+    public string ReadLine() => reader.ReadLine();
 }
