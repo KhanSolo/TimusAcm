@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -28,12 +27,13 @@ public sealed class Trie
 {
     private readonly TrieNode _root = new();
     
-    public void Insert(string word, int rating = 0)
+    public void Insert(string line, byte length, int rating)
     {
         var current = _root;
-        
-        foreach (var c in word)
+
+        for(byte i=0; i<length; i++)
         {
+            var c = line[i];
             int index = c - 'a';
             
             if (current.Children[index] == default(TrieNode))
@@ -96,14 +96,15 @@ public static class Program
             for (int i = 0; i < num; i++)
             {
                 var line = input.ReadLine();
+
                 var whitPos = line.IndexOf(' ');
                 if (whitPos == -1) continue;
 
-                var word = line[..whitPos];
-                var rate = line[(whitPos + 1)..];
+                ReadOnlySpan<char> span = line.AsSpan();
+                ReadOnlySpan<char> rate = span[(whitPos + 1)..];
                 var freq = int.Parse(rate);
 
-                trie.Insert(word, freq);
+                trie.Insert(line, (byte)whitPos, freq);
             }
 
             num = int.Parse(input.ReadLine());
