@@ -2,105 +2,220 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_WORD_LEN 16
-#define TOP 10
+#define MAX_WORD_LEN    16
+#define TOP_K           10
+#define HASH_SIZE       100999    // простое большое число
 
+// ---------- СЛОВО ----------
+// 
 typedef struct {
-    char *word;
+    char word[MAX_WORD_LEN];
     int freq;
 } Word;
 
-// компаратор для qsort
-int cmp_words(const void *a, const void *b) {
+// ---------- ARENA ----------
+
+typedef struct {
+    char* data;
+    size_t capacity;
+    size_t offset;
+} Arena;
+
+void arena_init(Arena* a, size_t size) {
+    a->data = (char*)malloc(size);
+    a->capacity = size;
+    a->offset = 0;
+}
+
+void* arena_alloc(Arena* a, size_t size) {
+    if (a->offset + size > a->capacity) {
+        // fallback (в реальной системе — лучше resize)
+        return NULL;
+    }
+    void* ptr = a->data + a->offset;
+    a->offset += size;
+    return ptr;
+}
+
+char* arena_strdup(Arena* a, const char* s) {
+    size_t len = strlen(s) + 1;
+    char* dst = (char*)arena_alloc(a, len);
+    memcpy(dst, s, len);
+    return dst;
+}
+
+// ---------- HASH ----------
+
+typedef struct CacheEntry {
+    char* prefix;                  // строка в arena
+    Word results[TOP_K];
+    int size;
+    struct CacheEntry* next;       // для chaining
+} CacheEntry;
+
+// простой и быстрый hash (djb2)
+unsigned long hash_str(const char* str) {
+    unsigned long hash = 5381;
+    int c;
+    while ((c = *str++))
+        hash = ((hash << 5) + hash) + c;
+    return hash;
+}
+
+// ---------- СРАВНЕНИЯ ----------
+
+int cmp_words(const void* a, const void* b) {
     return strcmp(((Word*)a)->word, ((Word*)b)->word);
 }
 
-// сравниваем сначала по частотам, потом по алфавиту
-int cmp_top(const void *a, const void *b) {
-    Word *wa = (Word*)a;
-    Word *wb = (Word*)b;
-    if (wa->freq != wb->freq)
-        return wb->freq - wa->freq;
-    return strcmp(wa->word, wb->word);
+int cmp_result(const void* a, const void* b) {
+    Word* w1 = (Word*)a;
+    Word* w2 = (Word*)b;
+
+    if (w1->freq != w2->freq)
+        return w2->freq - w1->freq;
+
+    return strcmp(w1->word, w2->word);
 }
 
-// двоичный поиск - lower bound
-// находим первое вхождение искомого символа (или индекс где он мог быть при отсутствии символа)
-int lower_bound(Word *arr, int n, const char *prefix) {
-    int l = 0, r = n; // левый и правый указатели
-    while (l < r) { // пока левый меньше правого
-        int m = (l + r) / 2; // середина
-        if (strcmp(arr[m].word, prefix) < 0) 
-            l = m + 1; // двигаем окно вправо
+// ---------- УТИЛИТЫ ----------
+
+int starts_with(const char* word, const char* prefix) {
+    return strncmp(word, prefix, strlen(prefix)) == 0;
+}
+
+int lower_bound(Word* words, int n, const char* prefix) {
+    int left = 0, right = n;
+    while (left < right) {
+        int mid = (left + right) / 2;
+        if (strcmp(words[mid].word, prefix) < 0)
+            left = mid + 1;
         else
-            r = m; // двигаем окно влево
+            right = mid;
     }
-    return l;
+    return left;
 }
 
-int starts_with(const char *word, const char *prefix) {
-    while (*prefix) { // пока префикс не закончился \0
-        if (*word++ != *prefix++) // сравниваем текущие символы, двигаем указатели       
-            return 0; // если не равны - возвращаем 0
+// ---------- TOP-K ----------
+
+void add_to_top(Word* top, int* size, Word candidate) {
+    if (*size < TOP_K) {
+        top[*size] = candidate;
+        (*size)++;
+    } else {
+        int worst = 0;
+        for (int i = 1; i < *size; i++) {
+            if (top[i].freq < top[worst].freq ||
+                (top[i].freq == top[worst].freq &&
+                 strcmp(top[i].word, top[worst].word) > 0)) {
+                worst = i;
+            }
+        }
+
+        if (candidate.freq > top[worst].freq ||
+            (candidate.freq == top[worst].freq &&
+             strcmp(candidate.word, top[worst].word) < 0)) {
+            top[worst] = candidate;
+        }
     }
-    return 1; // равны - единицу
 }
+
+// ---------- HASH TABLE ----------
+
+CacheEntry* table[HASH_SIZE];
+
+CacheEntry* cache_get(const char* prefix) {
+    unsigned long h = hash_str(prefix) % HASH_SIZE;
+    CacheEntry* cur = table[h];
+
+    while (cur) {
+        if (strcmp(cur->prefix, prefix) == 0)
+            return cur;
+        cur = cur->next;
+    }
+    return NULL;
+}
+
+void cache_put(Arena* arena, const char* prefix, Word* results, int size) {
+    unsigned long h = hash_str(prefix) % HASH_SIZE;
+
+    CacheEntry* entry = (CacheEntry*)arena_alloc(arena, sizeof(CacheEntry));
+    entry->prefix = arena_strdup(arena, prefix);
+    entry->size = size;
+
+    for (int i = 0; i < size; i++) {
+        entry->results[i] = results[i];
+    }
+
+    entry->next = table[h];
+    table[h] = entry;
+}
+
+// ---------- MAIN ----------
 
 int main() {
-    int N; scanf("%d", &N); // количество слов
 
-    Word *words = malloc(sizeof(Word) * N);
+    // arena (примерный размер)
+    Arena arena;
+    arena_init(&arena, 63 * 1024 * 1024); // 63MB
 
-    // Один общий буфер
-    size_t buffer_size = (size_t)N * MAX_WORD_LEN;
-    char *buffer = malloc(buffer_size);
-    char *ptr = buffer;
+    int N;
+    scanf("%d", &N);
+
+    //Word* words = (Word*)malloc(N * sizeof(Word));
+    Word* words = (Word*)arena_alloc(&arena, N * sizeof(Word));
 
     for (int i = 0; i < N; i++) {
-        scanf("%s %d", ptr, &words[i].freq);
-        words[i].word = ptr;
-        ptr += strlen(ptr) + 1;
+        scanf("%s %d", words[i].word, &words[i].freq);
     }
 
     qsort(words, N, sizeof(Word), cmp_words);
 
     int M;
-    scanf("%d", &M); // количество запросов
+    scanf("%d", &M);
 
-    char query[MAX_WORD_LEN];
-    int first = 1;
+    char prefix[MAX_WORD_LEN];
 
-    while (M--) {
+    for (int qi = 0; qi < M; qi++) {
+        if (qi > 0) printf("\n");
 
-        scanf("%s", query);
+        scanf("%s", prefix);
 
-        if (!first) printf("\n"); else first = 0;
-
-        int start = lower_bound(words, N, query);
-
-        Word top[TOP] = {0,};
-        int count = 0;
-
-        for (int i = start; i < N && starts_with(words[i].word, query); i++) {
-
-            if (count < TOP) {
-                top[count++] = words[i];
-                if (count == TOP)
-                    qsort(top, count, sizeof(Word), cmp_top);
-            } else {
-                if (words[i].freq > top[TOP-1].freq ||
-                   (words[i].freq == top[TOP-1].freq &&
-                    strcmp(words[i].word, top[TOP-1].word) < 0)) {
-
-                    top[TOP-1] = words[i];
-                    qsort(top, TOP, sizeof(Word), cmp_top);
-                }
+        // ---------- ПРОВЕРКА КЕША ----------
+        CacheEntry* cached = cache_get(prefix);
+        if (cached) {
+            for (int i = 0; i < cached->size; i++) {
+                printf("%s\n", cached->results[i].word);
             }
+            continue;
         }
 
-        for (int i = 0; i < count; i++)
+        // ---------- ВЫЧИСЛЕНИЕ ----------
+        int start = lower_bound(words, N, prefix);
+
+        Word top[TOP_K];
+        int top_size = 0;
+
+        for (int i = start; i < N; i++) {
+            if (!starts_with(words[i].word, prefix))
+                break;
+
+            add_to_top(top, &top_size, words[i]);
+        }
+
+        qsort(top, top_size, sizeof(Word), cmp_result);
+
+        // ---------- СОХРАНЕНИЕ В КЕШ ----------
+        cache_put(&arena, prefix, top, top_size);
+
+        // ---------- ВЫВОД ----------
+        for (int i = 0; i < top_size; i++) {
             printf("%s\n", top[i].word);
+        }
     }
+
+    //free(words);
+    free(arena.data);
 
     return 0;
 }
