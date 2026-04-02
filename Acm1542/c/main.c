@@ -1,20 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+//#include "profiler2.h"
 
-#define MAX_WORD_LEN    16
-#define TOP_K           10
+#define MAX_WORD_LEN    16        // максимальная длина слова
+#define TOP_K           10        // не более слов в выдаче
 #define HASH_SIZE       100999    // простое большое число
 
-// ---------- СЛОВО ----------
-// 
+// ---------- СЛОВО (символы, частота) ----------
 typedef struct {
     char word[MAX_WORD_LEN];
     int freq;
 } Word;
 
 // ---------- ARENA ----------
-
 typedef struct {
     char* data;
     size_t capacity;
@@ -36,7 +35,7 @@ void* arena_alloc(Arena* a, size_t size) {
     a->offset += size;
     return ptr;
 }
-
+// дублирование строки
 char* arena_strdup(Arena* a, const char* s) {
     size_t len = strlen(s) + 1;
     char* dst = (char*)arena_alloc(a, len);
@@ -45,11 +44,10 @@ char* arena_strdup(Arena* a, const char* s) {
 }
 
 // ---------- HASH ----------
-
 typedef struct CacheEntry {
     char* prefix;                  // строка в arena
     Word results[TOP_K];
-    int size;
+    int top_size;
     struct CacheEntry* next;       // для chaining
 } CacheEntry;
 
@@ -97,7 +95,6 @@ int lower_bound(Word* words, int n, const char* prefix) {
 }
 
 // ---------- TOP-K ----------
-
 void add_to_top(Word* top, int* size, Word candidate) {
     if (*size < TOP_K) {
         top[*size] = candidate;
@@ -136,14 +133,14 @@ CacheEntry* cache_get(const char* prefix) {
     return NULL;
 }
 
-void cache_put(Arena* arena, const char* prefix, Word* results, int size) {
+void cache_put(Arena* arena, const char* prefix, Word* results, int top_size) {
     unsigned long h = hash_str(prefix) % HASH_SIZE;
 
     CacheEntry* entry = (CacheEntry*)arena_alloc(arena, sizeof(CacheEntry));
     entry->prefix = arena_strdup(arena, prefix);
-    entry->size = size;
+    entry->top_size = top_size;
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < top_size; i++) {
         entry->results[i] = results[i];
     }
 
@@ -156,13 +153,12 @@ void cache_put(Arena* arena, const char* prefix, Word* results, int size) {
 int main() {
 
     // arena (примерный размер)
-    Arena arena;
+    Arena arena; // 
     arena_init(&arena, 63 * 1024 * 1024); // 63MB
 
     int N;
     scanf("%d", &N);
 
-    //Word* words = (Word*)malloc(N * sizeof(Word));
     Word* words = (Word*)arena_alloc(&arena, N * sizeof(Word));
 
     for (int i = 0; i < N; i++) {
@@ -181,10 +177,10 @@ int main() {
 
         scanf("%s", prefix);
 
-        // ---------- ПРОВЕРКА КЕША ----------
+        // ---------- ПРОВЕРКА в кэше ----------
         CacheEntry* cached = cache_get(prefix);
         if (cached) {
-            for (int i = 0; i < cached->size; i++) {
+            for (int i = 0; i < cached->top_size; i++) {
                 printf("%s\n", cached->results[i].word);
             }
             continue;
@@ -214,8 +210,9 @@ int main() {
         }
     }
 
-    //free(words);
     free(arena.data);
+
+    mem_statistics();
 
     return 0;
 }

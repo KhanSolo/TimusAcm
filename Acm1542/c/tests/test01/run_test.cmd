@@ -10,10 +10,12 @@ set OUTPUT=actual.txt
 set EXPECTED=expected.txt
 
 :: 1. Запуск программы: вход из файла, вывод в файл
+echo Start Time: %time%
 %APP% < "%INPUT%" > "%OUTPUT%" 2>&1
+echo End Time: %time%
 
 :: 2. Сравнение вывода с ожидаемым
-fc "%OUTPUT%" "%EXPECTED%" >nul
+fc "%OUTPUT%" "%EXPECTED%" > nul
 if %ERRORLEVEL% == 0 (
     echo OK: output matches expected
 ) else (
