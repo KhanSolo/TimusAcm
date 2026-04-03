@@ -102,16 +102,28 @@ void add_to_top(Word* top, int* size, Word candidate) {
     } else {
         int worst = 0;
         for (int i = 1; i < *size; i++) {
-            if (top[i].freq < top[worst].freq ||
-                (top[i].freq == top[worst].freq &&
-                 strcmp(top[i].word, top[worst].word) > 0)) {
+            if (
+                    top[i].freq < top[worst].freq 
+                    ||
+                    (
+                        top[i].freq == top[worst].freq
+                        &&
+                        strcmp(top[i].word, top[worst].word) > 0
+                    )
+                ) {
                 worst = i;
             }
         }
 
-        if (candidate.freq > top[worst].freq ||
-            (candidate.freq == top[worst].freq &&
-             strcmp(candidate.word, top[worst].word) < 0)) {
+        if (
+                candidate.freq > top[worst].freq
+                ||
+                (
+                    candidate.freq == top[worst].freq
+                    &&
+                    strcmp(candidate.word, top[worst].word) < 0
+                )
+            ) {
             top[worst] = candidate;
         }
     }
