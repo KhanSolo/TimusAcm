@@ -224,7 +224,7 @@ int main() {
 
     free(arena.data);
 
-    mem_statistics();
+    //mem_statistics();
 
     return 0;
 }
