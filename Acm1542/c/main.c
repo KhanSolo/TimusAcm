@@ -101,7 +101,7 @@ void add_to_top(Word* top, int* size, Word candidate) {
         (*size)++;
     } else {
         int worst = 0;
-        for (int i = 1; i < *size; i++) {
+        for (int i = 1; i < *size; ++i) {
             if (
                     top[i].freq < top[worst].freq 
                     ||
@@ -152,7 +152,7 @@ void cache_put(Arena* arena, const char* prefix, Word* results, int top_size) {
     entry->prefix = arena_strdup(arena, prefix);
     entry->top_size = top_size;
 
-    for (int i = 0; i < top_size; i++) {
+    for (int i = 0; i < top_size; ++i) {
         entry->results[i] = results[i];
     }
 
@@ -166,14 +166,14 @@ int main() {
 
     // arena (примерный размер)
     Arena arena; // 
-    arena_init(&arena, 63 * 1024 * 1024); // 63MB
+    arena_init(&arena, 60 * 1024 * 1024); // 60MB
 
     int N;
     scanf("%d", &N);
 
     Word* words = (Word*)arena_alloc(&arena, N * sizeof(Word));
 
-    for (int i = 0; i < N; i++) {
+    for (int i = 0; i < N; ++i) {
         scanf("%s %d", words[i].word, &words[i].freq);
     }
 
@@ -184,7 +184,7 @@ int main() {
 
     char prefix[MAX_WORD_LEN];
 
-    for (int qi = 0; qi < M; qi++) {
+    for (int qi = 0; qi < M; ++qi) {
         if (qi > 0) printf("\n");
 
         scanf("%s", prefix);
@@ -192,7 +192,7 @@ int main() {
         // ---------- ПРОВЕРКА в кэше ----------
         CacheEntry* cached = cache_get(prefix);
         if (cached) {
-            for (int i = 0; i < cached->top_size; i++) {
+            for (int i = 0; i < cached->top_size; ++i) {
                 printf("%s\n", cached->results[i].word);
             }
             continue;
@@ -204,7 +204,7 @@ int main() {
         Word top[TOP_K];
         int top_size = 0;
 
-        for (int i = start; i < N; i++) {
+        for (int i = start; i < N; ++i) {
             if (!starts_with(words[i].word, prefix))
                 break;
 
@@ -217,7 +217,7 @@ int main() {
         cache_put(&arena, prefix, top, top_size);
 
         // ---------- ВЫВОД ----------
-        for (int i = 0; i < top_size; i++) {
+        for (int i = 0; i < top_size; ++i) {
             printf("%s\n", top[i].word);
         }
     }
