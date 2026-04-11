@@ -22,32 +22,34 @@ unsigned long djb2(const char * str) {
     return hash;
 }
 
+ht* ht_new_entry(const char* key, char* value){
+    ht* current = (ht*)malloc(sizeof(ht));
+    current->key = key;
+    current->value = value;
+    current->next = NULL;
+    return current;
+}
+
+
 void ht_add(const char* key, char* value){
     unsigned long hash = djb2(key);
     int bucket = hash % HASH_LEN;    
     ht* existing = hash_table[bucket];
     if (existing) {
-
         while (existing) {
             if (strcmp(existing->key, key) == 0) { // ключи равны 
                 existing->value = value; // заменяем
                 return;
             }
             if (!existing->next) {
-                ht* current = malloc(sizeof(ht));
-                current->key = key;
-                current->value = value;
-                current->next = NULL;
+                ht* current = ht_new_entry(key, value);
                 existing->next = current;
                 return;
             }
             existing = existing->next;
         }
     } else {
-        ht* current = (ht*)malloc(sizeof(ht));
-        current->key = key;
-        current->value = value;
-        current->next = NULL;
+        ht* current = ht_new_entry(key, value);
         hash_table[bucket] = current;
     }
 }

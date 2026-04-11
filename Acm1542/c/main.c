@@ -61,7 +61,6 @@ unsigned long hash_str(const char* str) {
 }
 
 // ---------- СРАВНЕНИЯ ----------
-
 int cmp_words(const void* a, const void* b) {
     return strcmp(((Word*)a)->word, ((Word*)b)->word);
 }
@@ -168,7 +167,7 @@ int main() {
     Arena arena; // 
     arena_init(&arena, 60 * 1024 * 1024); // 60MB
 
-    int N;
+    int N; // количество слов
     scanf("%d", &N);
 
     Word* words = (Word*)arena_alloc(&arena, N * sizeof(Word));
@@ -179,7 +178,7 @@ int main() {
 
     qsort(words, N, sizeof(Word), cmp_words);
 
-    int M;
+    int M; // количество запросов
     scanf("%d", &M);
 
     char prefix[MAX_WORD_LEN];
@@ -189,7 +188,7 @@ int main() {
 
         scanf("%s", prefix);
 
-        // ---------- ПРОВЕРКА в кэше ----------
+        // --- сначала проверка в кэше -----
         CacheEntry* cached = cache_get(prefix);
         if (cached) {
             for (int i = 0; i < cached->top_size; ++i) {
