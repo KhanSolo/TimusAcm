@@ -1,0 +1,37 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-debug",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "-O0",
+                "-o",
+                "build/debug/acm1542.exe",
+                "main_Accepted.cpp"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Build debug version"
+        },
+        {
+            "label": "build-release",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-O2",
+                "-o",
+                "build/release/acm1542.exe",
+                "main_Accepted.cpp"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Build release version"
+        }
+    ]
+}

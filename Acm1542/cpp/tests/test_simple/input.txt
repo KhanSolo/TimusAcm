@@ -1,0 +1,7 @@
+3
+hello 5
+world 3
+help 2
+2
+hel
+wor
