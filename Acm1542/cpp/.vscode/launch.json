@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug MSYS2 + LLDB",
+            //"program": "${workspaceFolder}/build/debug/acm1542.exe",            
+            "program": "${workspaceFolder}/build/debug/${config:outputFile}",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "env": {
+                "PATH": "C:\\msys64\\mingw64\\bin;${env:PATH}"
+            },
+            "preLaunchTask": "build-debug"
+        }
+    ]
+}

@@ -4,12 +4,12 @@
         {
             "label": "build-debug",
             "type": "shell",
-            "command": "g++",
+            "command": "${config:clangPath}",
             "args": [
                 "-g",
                 "-O0",
                 "-o",
-                "build/debug/acm1542.exe",
+                "build/debug/${config:outputFile}",
                 "main_Accepted.cpp"
             ],
             "group": {
@@ -22,11 +22,11 @@
         {
             "label": "build-release",
             "type": "shell",
-            "command": "g++",
+            "command": "${config:clangPath}",
             "args": [
                 "-O2",
                 "-o",
-                "build/release/acm1542.exe",
+                "build/release/${config:outputFile}",
                 "main_Accepted.cpp"
             ],
             "group": "build",
